@@ -1,0 +1,31 @@
+Class: MapGraph
+
+Modifications made to MapGraph (what and why): 
+1. Four new data structures 
+	a. nodeMap - stores the mapping between GeographicPoint and MapNodes.
+	b. edgeSet - stores the list of edges added to the MapGraph.
+	c. visited - stores the list of visted nodes while performing BFS.
+	d. parentMap - stores the mapping between a node and its parent.
+2. addVertex method - perform validations and add a new node if not already present.
+3. addEdge method - perform validations and add a new edge to the Graph and to the edgeSet.
+4. isAnyParamNull method - checks if any of the input parameters are null.
+5. bfs method - performs BFS using the visited and parentMap data structures.
+6. getFinalPath method - finds the path from the target node back to the start node using the parentMap.
+
+Class name: MapNode
+
+Purpose and description of class: 
+1. To store an intersection location in the map.
+2. Also stores the list of outgoing edges.
+3. Overrides equals and hashcode method to help during the hashmap addition.
+
+Class name: MapEdge
+
+Purpose and description of class:
+1. To store a directed edge between intersections (MapNode objects).
+2. Stores all parameters required to represent a map edge.
+
+Overall Design Justification:
+1. Added a class (MapNode) to represent the vertices and another class (MapEdge) to represent the edge between these vertices.
+2. These classes along with the MapGraph class were sufficient to represent the Map completely and run the algorithm efficiently.
+3. The datastructures defined in the MapGraph class just worked well without any redundancy in data.
