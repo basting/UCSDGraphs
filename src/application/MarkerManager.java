@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import gmapsfx.javascript.object.LatLongBounds;
 import netscape.javascript.JSObject;
 
+@SuppressWarnings("unused")
 public class MarkerManager {
 
     private static final double DEFAULT_Z = 2;

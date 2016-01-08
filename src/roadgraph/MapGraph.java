@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -230,17 +231,58 @@ public class MapGraph {
 	 *   start to goal (including both start and goal).
 	 */
 	public List<GeographicPoint> dijkstra(GeographicPoint start, 
-										  GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
-	{
-		// TODO: Implement this method in WEEK 3
+										  GeographicPoint goal, 
+										  Consumer<GeographicPoint> nodeSearched) {
 
-		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
-		
-		return null;
-	}
+	    resetAllDistances();
+	    
+        HashSet<MapNode> visited = new HashSet<>(); // maintains a collection of visited map nodes while doing traversal
+        HashMap<MapNode, MapNode> parentMap = new HashMap<>(); // maintains a mapping between a node and its parent
+        
+        MapNode startNode = nodeMap.get(start);
+        startNode.setDistance(0);
+        
+        PriorityQueue<MapNode> queue = new PriorityQueue<>();
+        queue.add(startNode); // Add the start node to the queue to being processing
+        
+        while (queue.peek() != null) {
+            MapNode currNode = queue.remove();
+            if(!visited.contains(currNode)) { // if not present in the visited set, add to queue
+                visited.add(currNode); // add the current node to visited set
+                
+                nodeSearched.accept(currNode.getLocation());
+                System.out.println("--" + currNode + "--");
+                                
+                if(currNode.getLocation().equals(goal)) { // Found the goal node
+                    return getFinalPath(currNode, startNode, parentMap);
+                }
+                
+                List<MapEdge> outGoingEdges = currNode.getOutgoingEdges();
+                for (MapEdge e : outGoingEdges) {
+                        double newDistance = e.getLength() + currNode.getDistance();
+                        MapNode endLocNode = e.getEndLocation();
+                        if(!visited.contains(endLocNode) && 
+                                newDistance < endLocNode.getDistance()){
+                            endLocNode.setDistance(newDistance);
+                            parentMap.put(endLocNode, currNode); // map the currNode as the parent of its neighbours
+                            queue.add(endLocNode);
+                        }                   
+               }
+            }
+        }
+        return null;
+    }
 
-	/** Find the path from start to goal using A-Star search
+	private void resetAllDistances() {
+	    Set<GeographicPoint> verticesSet = getVertices();
+	    for(GeographicPoint vertex : verticesSet) {
+	        MapNode node = nodeMap.get(vertex);
+	        node.setDistance(Double.POSITIVE_INFINITY);
+	        node.setPredictedDistance(Double.POSITIVE_INFINITY);
+	    }
+    }
+
+    /** Find the path from start to goal using A-Star search
 	 * 
 	 * @param start The starting location
 	 * @param goal The goal location
@@ -262,22 +304,56 @@ public class MapGraph {
 	 *   start to goal (including both start and goal).
 	 */
 	public List<GeographicPoint> aStarSearch(GeographicPoint start, 
-											 GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
-	{
-		// TODO: Implement this method in WEEK 3
-		
-		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
-		
-		return null;
-	}
+											 GeographicPoint goal, 
+											 Consumer<GeographicPoint> nodeSearched) {
+	    resetAllDistances();
+	    
+        HashSet<MapNode> visited = new HashSet<>(); // maintains a collection of visited map nodes while doing traversal
+        HashMap<MapNode, MapNode> parentMap = new HashMap<>(); // maintains a mapping between a node and its parent
+        
+        MapNode startNode = nodeMap.get(start);
+        startNode.setDistance(0);
+        startNode.setPredictedDistance(0);
+        
+        PriorityQueue<MapNode> queue = new PriorityQueue<>();
+        queue.add(startNode); // Add the start node to the queue to being processing
+        
+        while (queue.peek() != null) {
+            MapNode currNode = queue.remove();
+            if(!visited.contains(currNode)) { // if not present in the visited set, add to queue
+                visited.add(currNode); // add the current node to visited set
+                
+                nodeSearched.accept(currNode.getLocation());
+                System.out.println("--" + currNode + "--");
+                
+                if(currNode.getLocation().equals(goal)) { // Found the goal node
+                    return getFinalPath(currNode, startNode, parentMap);
+                }
+                
+                List<MapEdge> outGoingEdges = currNode.getOutgoingEdges();
+                for (MapEdge e : outGoingEdges) {
+                        MapNode endLocNode = e.getEndLocation();
+                        double predictedDistance = goal.distance(endLocNode.getLocation());
+                        double newDistance = e.getLength() + currNode.getDistance() +
+                                                    predictedDistance;
+                        if(!visited.contains(endLocNode) && 
+                                newDistance < endLocNode.getDistance()){
+                            endLocNode.setDistance(newDistance);
+                            parentMap.put(endLocNode, currNode); // map the currNode as the parent of its neighbours
+                            queue.add(endLocNode);
+                        }                   
+               }
+            }
+        }
+        return null;
+    }
 
 	
 	
 	public static void main(String[] args)
 	{
 		System.out.print("Making a new map...");
-		MapGraph theMap = new MapGraph();
+		/*MapGraph theMap = new MapGraph();
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
 		System.out.println("DONE.");
@@ -287,11 +363,11 @@ public class MapGraph {
 		
         List<GeographicPoint> route = theMap.bfs(start,end);
         
-        System.out.println(route);
+        System.out.println(route);*/
         
 		// You can use this method for testing.  
 		
-		/* Use this code in Week 3 End of Week Quiz
+		/* Use this code in Week 3 End of Week Quiz */
 		MapGraph theMap = new MapGraph();
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/maps/utc.map", theMap);
@@ -300,11 +376,12 @@ public class MapGraph {
 		GeographicPoint start = new GeographicPoint(32.8648772, -117.2254046);
 		GeographicPoint end = new GeographicPoint(32.8660691, -117.217393);
 		
-		
 		List<GeographicPoint> route = theMap.dijkstra(start,end);
-		List<GeographicPoint> route2 = theMap.aStarSearch(start,end);
+		System.out.println("---------------------------");
+	    List<GeographicPoint> route2 = theMap.aStarSearch(start,end);
 
-		*/
+	    System.out.println(route);
+		System.out.println(route2);
 		
 	}
 	

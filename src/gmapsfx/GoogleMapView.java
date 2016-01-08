@@ -21,9 +21,11 @@ import gmapsfx.javascript.event.MapStateEventType;
 import gmapsfx.javascript.object.GoogleMap;
 import gmapsfx.javascript.object.LatLong;
 import gmapsfx.javascript.object.MapOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -140,7 +142,7 @@ public class GoogleMapView extends AnchorPane {
 
         webengine.getLoadWorker().stateProperty().addListener(
                 new ChangeListener<Worker.State>() {
-                    public void changed(ObservableValue ov, Worker.State oldState, Worker.State newState) {
+                    public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, Worker.State oldState, Worker.State newState) {
                         if (newState == Worker.State.SUCCEEDED) {
                             setInitialized(true);
                             fireMapInitializedListeners();

@@ -1,32 +1,21 @@
 package application.services;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.function.Consumer;
-
-
-import application.DataSet;
-import application.MapApp;
-import application.MarkerManager;
-import application.RouteVisualization;
-import application.controllers.RouteController;
-
-import java.util.Iterator;
-
-import geography.GeographicPoint;
-import geography.RoadSegment;
 import gmapsfx.GoogleMapView;
 import gmapsfx.javascript.object.GoogleMap;
 import gmapsfx.javascript.object.LatLong;
 import gmapsfx.javascript.object.LatLongBounds;
 import gmapsfx.javascript.object.MVCArray;
 import gmapsfx.shapes.Polyline;
-import javafx.scene.control.Button;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
+
+import application.MapApp;
+import application.MarkerManager;
+import application.controllers.RouteController;
 
 public class RouteService {
 	private GoogleMap map;
@@ -34,7 +23,7 @@ public class RouteService {
     // static variable
     private MarkerManager markerManager;
     private Polyline routeLine;
-    private RouteVisualization rv;
+    //private RouteVisualization rv;
 
 	public RouteService(GoogleMapView mapComponent, MarkerManager manager) {
 		this.map = mapComponent.getMap();

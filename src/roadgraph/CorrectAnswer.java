@@ -26,6 +26,7 @@ public class CorrectAnswer {
                 double y = s.nextDouble();
                 path.add(new GeographicPoint(x, y));
             }
+            s.close();
         } catch (Exception e) {
             System.err.println("Error reading correct answer!");
             e.printStackTrace();

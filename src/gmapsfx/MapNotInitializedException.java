@@ -22,6 +22,11 @@ package gmapsfx;
  */
 public class MapNotInitializedException extends RuntimeException {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7415952814492741197L;
+
     public MapNotInitializedException() {
         super( "Map has not yet been initialized");
     }

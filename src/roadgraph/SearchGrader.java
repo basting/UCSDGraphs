@@ -1,16 +1,10 @@
 package roadgraph;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import geography.GeographicPoint;
+
 import java.util.List;
-import java.util.Scanner;
+
 import util.GraphLoader;
-import geography.*;
 
 /**
  * @author UCSD MOOC Development Team
@@ -41,7 +35,7 @@ public class SearchGrader implements Runnable {
         thread.start();
         
         // Allow it to run for 10 seconds
-        long endTime = System.currentTimeMillis() + 10000;
+/*        long endTime = System.currentTimeMillis() + 10000;
         boolean infinite = false;
         while(thread.isAlive()) {
             if (System.currentTimeMillis() > endTime) {
@@ -53,7 +47,7 @@ public class SearchGrader implements Runnable {
         }
         if (infinite) {
             System.out.println(printOutput((double)grader.correct / TESTS, grader.feedback + "\nYour program entered an infinite loop."));
-        }
+        }*/
     }
 
     /** Run a test case on an adjacency list and adjacency matrix.

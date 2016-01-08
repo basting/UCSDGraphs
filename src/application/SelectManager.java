@@ -5,10 +5,10 @@
  */
 
 package application;
-import application.services.GeneralService;
 import geography.GeographicPoint;
 import gmapsfx.javascript.object.Marker;
 
+@SuppressWarnings("unused")
 public class SelectManager {
     private CLabel<GeographicPoint> pointLabel;
     private CLabel<GeographicPoint> startLabel;

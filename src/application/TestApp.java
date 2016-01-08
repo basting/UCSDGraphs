@@ -53,6 +53,7 @@ public class TestApp extends Application
 
         map = mapComponent.createMap(options);
 
+        @SuppressWarnings("unused")
         Polyline p = new Polyline();
 
     }
