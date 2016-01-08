@@ -32,17 +32,13 @@ import util.GraphLoader;
 public class MapGraph {
 	private HashMap<GeographicPoint, MapNode> nodeMap; // maintains a collection of map nodes
 	private HashSet<MapEdge> edgeSet; // maintains a collection of map edges
-	private HashSet<MapNode> visited; // maintains a collection of visited map nodes while doing traversal
-	private HashMap<MapNode, MapNode> parentMap; // maintains a mapping between a node and its parent
 	
 	/** 
 	 * Create a new empty MapGraph 
 	 */
 	public MapGraph() {
 	    nodeMap = new HashMap<>();
-	    edgeSet = new HashSet<>();
-	    visited = new HashSet<>();
-	    parentMap = new HashMap<>();
+	    edgeSet = new HashSet<>();	    
 	}
 	
 	/**
@@ -162,8 +158,9 @@ public class MapGraph {
 	public List<GeographicPoint> bfs(GeographicPoint start, 
 			 					     GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
-		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
+		HashSet<MapNode> visited = new HashSet<>(); // maintains a collection of visited map nodes while doing traversal
+	    HashMap<MapNode, MapNode> parentMap = new HashMap<>(); // maintains a mapping between a node and its parent
+	    
 	    MapNode startNode = nodeMap.get(start);
 	    Queue<MapNode> queue = new LinkedList<>();
 	    queue.add(startNode); // Add the start node to the queue to being processing
@@ -173,7 +170,7 @@ public class MapGraph {
 	        nodeSearched.accept(currNode.getLocation());
 	        
 	        if(currNode.getLocation().equals(goal)) { // Found the goal node
-	            return getFinalPath(currNode, startNode);
+	            return getFinalPath(currNode, startNode, parentMap);
 	        }
 	        
 	        visited.add(currNode); // add the current node to visited set
@@ -192,7 +189,8 @@ public class MapGraph {
 	}
 	
 	// Method to find the path from the goad node back to the start node
-	private List<GeographicPoint> getFinalPath(MapNode goalNode, MapNode startNode) {
+	private List<GeographicPoint> getFinalPath(MapNode goalNode, MapNode startNode, 
+	        HashMap<MapNode, MapNode> parentMap) {
 	    MapNode currNode = goalNode;
 	    
 	    List<GeographicPoint> result = new ArrayList<>();
